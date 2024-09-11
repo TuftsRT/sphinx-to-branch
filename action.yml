@@ -1,0 +1,91 @@
+name: Deploy Sphinx
+author: Tufts University
+description: build sphinx documentation and push results to gh-pages
+
+inputs:
+  source-branch:
+    description: |
+      Branch to build documentation from. Defaults to the triggering branch
+    required: false
+    default: ${{ github.ref_name }}
+  destination-branch:
+    description: |
+      Branch to push built the documentation to. Defaults to `gh-pages` branch.
+    required: false
+    default: gh-pages
+  clear-destination:
+    description: |
+      Whether to delete all files from the destination branch before building.
+      Must be set to "true" for deletion to occur. Other values ignored.
+    required: false
+    default: "false"
+  source-directory:
+    description: |
+      Directory on source branch containing documentation source files.
+      Defaults to repository root.
+    required: false
+    default: ""
+  destination-directory:
+    description: |
+      Directory on destination branch to push the built documentation to.
+      Defaults to repository root.
+    required: false
+    default: ""
+  environment-file:
+    description: |
+      Conda environment YML file on source branch to install dependencies from.
+      Must contain Sphinx and any other build dependencies.
+      Defaults to `environment.yml` in repository root.
+    required: false
+    default: environment.yml
+  environment-name:
+    description: |
+      Name of the conda environment specified in `environment-file` to activate.
+    required: true
+  build-command:
+    description: |
+      Command to build the documentation. Uses `sphinx-build` if omitted.
+    required: false
+    default: sphinx-build
+  build-arguments:
+    description: |
+      Additional optional arguments to pass to the build command.
+    required: false
+    default: ""
+  commit-message:
+    description: |
+      Message to use when committing built documentation to destination branch.
+      Defaults to the SHA of the triggering commit.
+    required: false
+    default: ${{ github.sha }}
+
+runs:
+  using: composite
+  defaults:
+    run:
+      shell: bash -el {0}
+  steps:
+    - id: checkout-source
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.source-branch }}
+        path: source
+    - id: configure-environment
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        activate-environment: ${{ inputs.environment-name }}
+        environment-file: source/${{ inputs.environment-file }}
+        miniforge-version: latest
+        use-mamba: true
+    - id: build-and-deploy
+      run: ${{ github.action_path }}/build-and-deploy.sh
+      env:
+        BRANCH: ${{ inputs.destination-branch }}
+        BUILD_ARGS: ${{ inputs.build-arguments }}
+        BUILD_CMD: ${{ inputs.build-command }}
+        CLEAR: ${{ inputs.clear-destination }}
+        GH_TOKEN: ${{ github.token }}
+        MESSAGE: ${{ inputs.commit-message }}
+        OUT_DIR: ${{ inputs.destination-directory }}
+        REPO: ${{ github.repository }}
+        SRC_DIR: source/${{ inputs.source-directory }}
