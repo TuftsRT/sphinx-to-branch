@@ -80,12 +80,13 @@ runs:
     - id: build-and-deploy
       run: ${{ github.action_path }}/build-and-deploy.sh
       env:
-        BRANCH: ${{ inputs.destination-branch }}
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         CLEAR: ${{ inputs.clear-destination }}
+        DST_BRANCH: ${{ inputs.destination-branch }}
         GH_TOKEN: ${{ github.token }}
         MESSAGE: ${{ inputs.commit-message }}
         OUT_DIR: ${{ inputs.destination-directory }}
         REPO: ${{ github.repository }}
+        SRC_BRANCH: ${{ inputs.source-branch }}
         SRC_DIR: source/${{ inputs.source-directory }}
