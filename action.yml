@@ -65,6 +65,8 @@ runs:
     run:
       shell: bash -el {0}
   steps:
+    - id: allow-execution
+      run: chmod +x ${{ github.action_path }}/*.sh
     - id: checkout-source
       uses: actions/checkout@v4
       with:
