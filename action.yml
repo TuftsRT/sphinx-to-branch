@@ -61,12 +61,10 @@ inputs:
 
 runs:
   using: composite
-  defaults:
-    run:
-      shell: bash -el {0}
   steps:
     - id: allow-execution
       run: chmod +x ${{ github.action_path }}/*.sh
+      shell: bash
     - id: checkout-source
       uses: actions/checkout@v4
       with:
@@ -81,10 +79,12 @@ runs:
         use-mamba: true
     - id: configure-git
       run: ${{ github.action_path }}/configure-git.sh
+      shell: bash -el {0}
       env:
         REPO_PATH: source
     - id: build-and-deploy
       run: ${{ github.action_path }}/build-and-deploy.sh
+      shell: bash -el {0}
       env:
         BRANCH: ${{ inputs.destination-branch }}
         BUILD_ARGS: ${{ inputs.build-arguments }}
