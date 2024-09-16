@@ -78,7 +78,7 @@ runs:
         miniforge-version: latest
         use-mamba: true
     - id: configure-git
-      run: ${{ github.action_path }}/configure-git.sh
+      run: source ${{ github.action_path }}/configure-git.sh
       shell: bash -el {0}
       env:
         REPO_PATH: source
