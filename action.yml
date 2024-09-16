@@ -82,6 +82,10 @@ runs:
       shell: bash
       env:
         REPO_PATH: source
+    - id: checkout-destination
+      uses: actions/checkout@v4
+      with:
+        path: destination
     - id: build-and-deploy
       run: ${{ github.action_path }}/build-and-deploy.sh
       shell: bash -el {0}
@@ -90,8 +94,8 @@ runs:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         CLEAR: ${{ inputs.clear-destination }}
-        GH_TOKEN: ${{ github.token }}
         MESSAGE: ${{ inputs.commit-message }}
         OUT_DIR: ${{ inputs.destination-directory }}
+        REPO_PATH: destination
         REPOSITORY: ${{ github.repository }}
         SRC_DIR: source/${{ inputs.source-directory }}

@@ -1,8 +1,6 @@
 #!/bin/bash
 home=$(pwd)
-tmp=$(mktemp -d)
-gh repo clone $REPOSITORY $tmp
-cd $tmp
+cd $REPO_PATH
 git checkout $BRANCH -- || git switch --orphan $BRANCH
 if [ "$CLEAR" == "true" ]; then git rm -rfq *; fi
 $BUILD_CMD $BUILD_ARGS $home/$SRC_DIR $OUT_DIR
