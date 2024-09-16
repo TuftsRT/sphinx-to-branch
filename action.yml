@@ -79,7 +79,7 @@ runs:
         use-mamba: true
     - id: configure-git
       run: ${{ github.action_path }}/configure-git.sh
-      shell: bash -el {0}
+      shell: bash
       env:
         REPO_PATH: source
     - id: build-and-deploy
