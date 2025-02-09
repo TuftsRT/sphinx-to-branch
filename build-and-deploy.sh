@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 home=$(pwd)
 cd $REPO_PATH
 git pull --all
