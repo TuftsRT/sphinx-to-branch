@@ -38,10 +38,6 @@ inputs:
       Defaults to `environment.yml` in repository root.
     required: false
     default: environment.yml
-  environment-name:
-    description: |
-      Name of the conda environment specified in `environment-file` to activate.
-    required: true
   build-command:
     description: |
       Command to build the documentation. Uses `sphinx-build` if omitted.
@@ -71,12 +67,10 @@ runs:
         ref: ${{ inputs.source-branch }}
         path: source
     - id: setup-environment
-      uses: conda-incubator/setup-miniconda@v3
+      uses: mamba-org/setup-micromamba@v2
       with:
-        activate-environment: ${{ inputs.environment-name }}
         environment-file: source/${{ inputs.environment-file }}
-        miniforge-version: latest
-        use-mamba: true
+        init-shell: bash
     - id: configure-git
       run: ${{ github.action_path }}/configure-git.sh
       shell: bash
