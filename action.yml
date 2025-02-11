@@ -1,6 +1,9 @@
 name: sphinx-to-branch
 author: Tufts University
 description: build sphinx documentation and push results to gh-pages
+branding:
+  icon: file-text
+  color: blue
 
 inputs:
   source-branch:
