@@ -3,7 +3,15 @@ home=$(pwd)
 cd $REPO_PATH
 git pull --all
 git checkout $BRANCH -- || git switch --orphan $BRANCH
-if [ "$CLEAR" == "true" ]; then git rm -rfq *; fi
+if [ "$CLEAR" == "true" ]
+then
+    git rm -rfq *
+else
+while IFS="" read -r pattern
+    do
+        rm -rf $pattern
+    done <<< "$(grep '\S' <<< $RM_LIST)"
+fi
 set -e
 $BUILD_CMD $BUILD_ARGS "$home/$SRC_DIR" "./$OUT_DIR"
 set +e
