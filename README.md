@@ -1,4 +1,4 @@
-# deploy-sphinx
+# sphinx-to-branch
 
 GitHub action to automatically build and publish Sphinx documentation. Default configuration runs `sphinx-build` and pushes the resulting build artifacts to the `gh-pages` branch along with a `.nojekyll` file. The action can also be used to run an arbitrary tool on the contents of one branch and then push the results to another branch if desired, but it is intended for Sphinx deployments and other similar workflows.
 
@@ -90,7 +90,7 @@ jobs:
   build-main:
     runs-on: ubuntu-latest
     steps:
-    - uses: tuftsrt/deploy-sphinx@v1
+    - uses: tuftsrt/sphinx-to-branch@v1
         with:
           source-directory: source
 ```
@@ -109,7 +109,7 @@ jobs:
   build-develop:
     runs-on: ubuntu-latest
     steps:
-    - uses: tuftsrt/deploy-sphinx@v1
+    - uses: tuftsrt/sphinx-to-branch@v1
         with:
           source-directory: source
           destination-directory: dev
@@ -130,7 +130,7 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: tuftsrt/deploy-sphinx@v1
+    - uses: tuftsrt/sphinx-to-branch@v1
         with:
           source-directory: source
           clear-destination: "true"

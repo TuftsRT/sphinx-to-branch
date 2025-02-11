@@ -1,4 +1,4 @@
-name: Deploy Sphinx
+name: sphinx-to-branch
 author: Tufts University
 description: build sphinx documentation and push results to gh-pages
 
