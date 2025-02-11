@@ -6,7 +6,7 @@ Note that this action only pushes the build artifacts to the `gh-pages` (or any 
 
 This is a _composite_ action and hence must be run on a Linux-based runner like `ubuntu-latest` or similar.
 
-Developed and maintained by the Research Technology (RT) within Tufts Technology Services (TTS) at Tufts University.
+Developed and maintained by Research Technology (RT), Tufts Technology Services (TTS), Tufts University.
 
 [gh-docs-conf-pug-source]: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 
@@ -69,7 +69,7 @@ Developed and maintained by the Research Technology (RT) within Tufts Technology
 
 - `use-bot`
 
-  - Whether to use the github-actions[bot] account to commit and push changes. Must be set to `"true"` for the bot to be used. Other values ignored. (Author of the last commit on the source branch used by default.)
+  - Whether to use the `github-actions[bot]` account to commit and push changes. Must be set to `"true"` for the bot to be used. Other values ignored. (Author of the last commit on the source branch used by default.)
   - Default: `"false"`
 
 - `dry-run`
@@ -95,7 +95,7 @@ jobs:
           source-directory: source
 ```
 
-Note that `source-branch` and `destination-branch` do not need to be specified. The default behavior is to use `main` as the source and `gh-pages` as the destination.
+Note that `source-branch` and `destination-branch` do not need to be specified. The default behavior is to use the triggering branch (in this case `main`) as the source and `gh-pages` as the destination.
 
 ### Development Build
 
@@ -111,13 +111,12 @@ jobs:
     steps:
     - uses: tuftsrt/deploy-sphinx@v1
         with:
-          source-branch: develop
           source-directory: source
           destination-directory: dev
           use-bot: "true"
 ```
 
-Note that this places the outputs in a designated directory on the destination branch and uses the `github-actions[bot]` as the committer instead of the author of the last commit on the source branch.
+This places the outputs in a designated directory (`dev`) on the destination branch and uses the `github-actions[bot]` as the committer instead of the author of the last commit on the source branch.
 
 ### Pull Request Check for Successful Build
 
@@ -142,10 +141,8 @@ Note how the destination directory is cleared to ensure a clean build and the co
 
 ## Advanced Usage
 
-Note that the `sphinx-build` command can be replaced with any other command with a similar signature. The specified command is executed in the root of the destination repository as follows:
+The `sphinx-build` command can be replaced with any other command with a similar signature. The specified command is executed in the **root** of the destination repository as follows.
 
 ```
-
 [command] [arguments] [source-repo]/[source-dir] [destination-dir]
-
 ```
