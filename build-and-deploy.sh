@@ -9,7 +9,8 @@ then
 else
     while IFS="" read -r pattern
     do
-        rm -rf -- "$pattern"
+        # shellcheck disable=SC2086
+        rm -rf -- $pattern
     done <<< "$(grep '\S' <<< "$RM_LIST")"
 fi
 set -e
