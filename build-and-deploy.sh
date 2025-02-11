@@ -17,7 +17,10 @@ $BUILD_CMD "$BUILD_ARGS" "$home/$SRC_DIR" "./$OUT_DIR"
 set +e
 if [ "$DRY_RUN" != "true" ]
 then
-    touch .nojekyll
+    if [ "$ADD_NOJEKYLL" == "true" ]
+    then
+        touch .nojekyll
+    fi
     git add -A
     git commit -m "$MESSAGE"
     git push -u origin "$BRANCH"

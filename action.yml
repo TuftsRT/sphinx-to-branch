@@ -54,6 +54,12 @@ inputs:
       Additional optional arguments to pass to the build command.
     required: false
     default: ""
+  add-nojekyll:
+    description: |
+      Whether to add a `.nojekyll` file to the root of the destination branch.
+      Must be set to "true" for the file to be added. Other values ignored.
+    required: false
+    default: "true"
   commit-message:
     description: |
       Message to use when committing built documentation to destination branch.
@@ -106,6 +112,7 @@ runs:
       run: ${{ github.action_path }}/build-and-deploy.sh
       shell: bash -el {0}
       env:
+        ADD_NOJEKYLL: ${{ inputs.add-nojekyll }}
         BRANCH: ${{ inputs.destination-branch }}
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
