@@ -13,7 +13,8 @@ else
     done <<< "$(grep '\S' <<< "$RM_LIST")"
 fi
 set -e
-$BUILD_CMD "$BUILD_ARGS" "$home/$SRC_DIR" "./$OUT_DIR"
+# shellcheck disable=SC2086
+$BUILD_CMD $BUILD_ARGS "$home/$SRC_DIR" "./$OUT_DIR"
 set +e
 if [ "$DRY_RUN" != "true" ]
 then
