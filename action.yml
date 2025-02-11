@@ -54,6 +54,13 @@ inputs:
       Defaults to the SHA of the triggering commit.
     required: false
     default: ${{ github.sha }}
+  dry-run:
+    description: |
+      Whether to run the action without pushing to the destination branch.
+      Must be set to "true" for dry run to occur. Other values ignored.
+      (Destination branch will need to be cleared to ensure a clean build.)
+    required: false
+    default: "false"
 
 runs:
   using: composite
@@ -88,6 +95,7 @@ runs:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         CLEAR: ${{ inputs.clear-destination }}
+        DRY_RUN: ${{ inputs.dry-run }}
         MESSAGE: ${{ inputs.commit-message }}
         OUT_DIR: ${{ inputs.destination-directory }}
         REPO_PATH: destination
