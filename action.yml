@@ -54,6 +54,13 @@ inputs:
       Defaults to the SHA of the triggering commit.
     required: false
     default: ${{ github.sha }}
+  use-bot:
+    description: |
+      Whether to use the github-actions[bot] account to commit and push changes.
+      Must be set to "true" for the bot to be used. Other values ignored.
+      (Author of the last commit on the source branch used by default.)
+    required: false
+    default: "false"
   dry-run:
     description: |
       Whether to run the action without pushing to the destination branch.
@@ -84,6 +91,7 @@ runs:
       shell: bash
       env:
         REPO_PATH: source
+        USE_BOT: ${{ inputs.use-bot }}
     - id: checkout-destination
       uses: actions/checkout@v4
       with:
