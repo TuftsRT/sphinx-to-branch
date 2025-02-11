@@ -1,0 +1,126 @@
+name: sphinx-to-branch
+author: Tufts University
+description: build sphinx documentation and push results to gh-pages
+
+inputs:
+  source-branch:
+    description: |
+      Branch to build documentation from. Defaults to the triggering branch
+    required: false
+    default: ${{ github.ref_name }}
+  destination-branch:
+    description: |
+      Branch to push built the documentation to. Defaults to `gh-pages` branch.
+    required: false
+    default: gh-pages
+  clear-destination:
+    description: |
+      Whether to delete all files from the destination branch before building.
+      Must be set to "true" for deletion to occur. Other values ignored.
+    required: false
+    default: "false"
+  remove-items:
+    description: |
+      Newline-delimited list of glob patters to delete from the destination
+      branch before building. Ignored if destination branch set to be cleared.
+    required: false
+    default: ""
+  source-directory:
+    description: |
+      Directory on source branch containing documentation source files.
+      Defaults to repository root.
+    required: false
+    default: ""
+  destination-directory:
+    description: |
+      Directory on destination branch to push the built documentation to.
+      Defaults to repository root.
+    required: false
+    default: ""
+  environment-file:
+    description: |
+      Conda environment YML file on source branch to install dependencies from.
+      Must contain Sphinx and any other build dependencies.
+      Defaults to `environment.yml` in repository root.
+    required: false
+    default: environment.yml
+  build-command:
+    description: |
+      Command to build the documentation. Uses `sphinx-build` if omitted.
+    required: false
+    default: sphinx-build
+  build-arguments:
+    description: |
+      Additional optional arguments to pass to the build command.
+    required: false
+    default: ""
+  add-nojekyll:
+    description: |
+      Whether to add a `.nojekyll` file to the root of the destination branch.
+      Must be set to "true" for the file to be added. Other values ignored.
+    required: false
+    default: "true"
+  commit-message:
+    description: |
+      Message to use when committing built documentation to destination branch.
+      Defaults to the SHA of the triggering commit.
+    required: false
+    default: ${{ github.sha }}
+  use-bot:
+    description: |
+      Whether to use the github-actions[bot] account to commit and push changes.
+      Must be set to "true" for the bot to be used. Other values ignored.
+      (Author of the last commit on the source branch used by default.)
+    required: false
+    default: "false"
+  dry-run:
+    description: |
+      Whether to run the action without pushing to the destination branch.
+      Must be set to "true" for dry run to occur. Other values ignored.
+      Can be used as a pull request status check confirming a successful build.
+      (Destination branch will need to be cleared to ensure a clean build.)
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - id: allow-execution
+      run: chmod +x ${{ github.action_path }}/*.sh
+      shell: bash
+    - id: checkout-source
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.source-branch }}
+        path: source
+    - id: setup-environment
+      uses: mamba-org/setup-micromamba@v2
+      with:
+        environment-file: source/${{ inputs.environment-file }}
+        init-shell: bash
+    - id: configure-git
+      run: ${{ github.action_path }}/configure-git.sh
+      shell: bash
+      env:
+        REPO_PATH: source
+        USE_BOT: ${{ inputs.use-bot }}
+    - id: checkout-destination
+      uses: actions/checkout@v4
+      with:
+        path: destination
+    - id: build-and-deploy
+      run: ${{ github.action_path }}/build-and-deploy.sh
+      shell: bash -el {0}
+      env:
+        ADD_NOJEKYLL: ${{ inputs.add-nojekyll }}
+        BRANCH: ${{ inputs.destination-branch }}
+        BUILD_ARGS: ${{ inputs.build-arguments }}
+        BUILD_CMD: ${{ inputs.build-command }}
+        CLEAR: ${{ inputs.clear-destination }}
+        DRY_RUN: ${{ inputs.dry-run }}
+        MESSAGE: ${{ inputs.commit-message }}
+        OUT_DIR: ${{ inputs.destination-directory }}
+        REPO_PATH: destination
+        REPOSITORY: ${{ github.repository }}
+        RM_LIST: ${{ inputs.remove-items }}
+        SRC_DIR: source/${{ inputs.source-directory }}
