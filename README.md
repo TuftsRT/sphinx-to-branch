@@ -76,7 +76,7 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
   - Whether to run the action without pushing to the destination branch. Must be set to `"true"` for dry run to occur. Other values ignored. Can be used as a pull request status check confirming a successful build. (Destination branch will need to be cleared to ensure a clean build.)
   - Default: `"false"`
 
-## Examples
+## Usage Examples
 
 ### Basic Sphinx Build
 
