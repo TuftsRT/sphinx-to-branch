@@ -4,8 +4,8 @@ if [ "$USE_BOT" == "true" ]; then
     git config --global user.email "github-actions[bot]@users.noreply.github.com"
 else
     home=$(pwd)
-    cd "$REPO_PATH" || exit
+    cd "$REPO_PATH" || exit 1
     git config --global user.name "$(git show -s --format='%an' HEAD)"
     git config --global user.email "$(git show -s --format='%ae' HEAD)"
-    cd "$home" || exit
+    cd "$home" || exit 1
 fi

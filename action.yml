@@ -111,19 +111,29 @@ runs:
       uses: actions/checkout@v4
       with:
         path: destination
-    - id: build-and-deploy
-      run: ${{ github.action_path }}/build-and-deploy.sh
+    - id: setup-destination
+      run: ${{ github.action_path }}/setup-destination.sh
+      shell: bash
+      with:
+        BRANCH: ${{ inputs.destination-branch }}
+        CLEAR: ${{ inputs.clear-destination }}
+        REPO_PATH: destination
+        RM_LIST: ${{ inputs.remove-items }}
+    - id: run-build
+      run: ${{ github.action_path }}/run-build.sh
       shell: bash -el {0}
+      env:
+        BUILD_ARGS: ${{ inputs.build-arguments }}
+        BUILD_CMD: ${{ inputs.build-command }}
+        OUT_DIR: ${{ inputs.destination-directory }}
+        REPO_PATH: destination
+        SRC_DIR: source/${{ inputs.source-directory }}
+    - id: deploy-artifacts
+      if: ${{ inputs.dry-run != "true" }}
+      run: ${{ github.action_path }}/deploy-artifacts.sh
+      shell: bash
       env:
         ADD_NOJEKYLL: ${{ inputs.add-nojekyll }}
         BRANCH: ${{ inputs.destination-branch }}
-        BUILD_ARGS: ${{ inputs.build-arguments }}
-        BUILD_CMD: ${{ inputs.build-command }}
-        CLEAR: ${{ inputs.clear-destination }}
-        DRY_RUN: ${{ inputs.dry-run }}
         MESSAGE: ${{ inputs.commit-message }}
-        OUT_DIR: ${{ inputs.destination-directory }}
         REPO_PATH: destination
-        REPOSITORY: ${{ github.repository }}
-        RM_LIST: ${{ inputs.remove-items }}
-        SRC_DIR: source/${{ inputs.source-directory }}
