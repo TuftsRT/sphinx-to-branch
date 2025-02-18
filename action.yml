@@ -120,13 +120,12 @@ runs:
         REPO_PATH: destination
         RM_LIST: ${{ inputs.remove-items }}
     - id: run-build
-      run: ${{ github.action_path }}/run-build.sh
+      run: $BUILD_CMD $BUILD_ARGS "source/$SRC_DIR" "destination/$OUT_DIR"
       shell: bash -el {0}
       env:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         OUT_DIR: ${{ inputs.destination-directory }}
-        REPO_PATH: destination
         SRC_DIR: source/${{ inputs.source-directory }}
     - id: deploy-artifacts
       if: ${{ inputs.dry-run != "true" }}
