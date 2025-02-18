@@ -7,10 +7,10 @@ if [ "$CLEAR" == "true" ]
 then
     git rm -rfq -- *
 else
+    # shellcheck disable=SC2086
     while IFS="" read -r pattern
     do
-        # shellcheck disable=SC2086
         rm -rf -- $pattern
-    done <<< "$(grep '\S' <<< "$RM_LIST")"
+    done <<< "$(grep '\S' <<< $RM_LIST)"
 fi
 cd "$home" || exit 1
