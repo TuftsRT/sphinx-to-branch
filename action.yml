@@ -126,7 +126,7 @@ runs:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         OUT_DIR: ${{ inputs.destination-directory }}
-        SRC_DIR: source/${{ inputs.source-directory }}
+        SRC_DIR: ${{ inputs.source-directory }}
     - id: deploy-artifacts
       if: ${{ inputs.dry-run != "true" }}
       run: ${{ github.action_path }}/deploy-artifacts.sh
