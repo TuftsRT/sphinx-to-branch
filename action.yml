@@ -84,10 +84,36 @@ inputs:
       (Destination branch will need to be cleared to ensure a clean build.)
     required: false
     default: "false"
+  use-expect:
+    description: |
+      Whether to use `expect` to perform actions based on build console output.
+      Must be set to "true" for `expect` to be used. Other values ignored.
+    required: false
+    default: "false"
+  expect-timeout:
+    description: |
+      Number of seconds `expect` will wait for the build to complete.
+      Must be an integer. Defaults to -1, which disables the timeout.
+      Default timeout behavior is to quit the build and quietly exit success.
+      Use `expect-pattern-action` to configure an alternate timeout behavior.
+    required: false
+    default: -1
+  expect-pattern-action:
+    description: |
+      Pattern-action pairs passed to `expect` when monitoring console output.
+      See `man expect` and action README for examples and syntax details.
+      Any timeout action must be specified here using the `timeout` pattern.
+      Variable $EXPECT_TIMEOUT (value of `expect-timeout`) available for use.
+    required: false
+    default: ""
 
 runs:
   using: composite
   steps:
+    - id: install-expect
+      if: ${{ inputs.use-expect == 'true' }}
+      run: sudo apt-get install --quiet --yes expect
+      shell: bash
     - id: allow-execution
       run: chmod +x ${{ github.action_path }}/*.sh
       shell: bash
@@ -114,12 +140,31 @@ runs:
     - id: setup-destination
       run: ${{ github.action_path }}/setup-destination.sh
       shell: bash
-      with:
+      env:
         BRANCH: ${{ inputs.destination-branch }}
         CLEAR: ${{ inputs.clear-destination }}
         REPO_PATH: destination
         RM_LIST: ${{ inputs.remove-items }}
-    - id: run-build
+    - id: write-expect
+      if: ${{ inputs.use-expect == 'true' }}
+      run: ${{ github.action_path }}/write-expect.sh
+      shell: bash
+      env:
+        BUILD_ARGS: ${{ inputs.build-arguments }}
+        BUILD_CMD: ${{ inputs.build-command }}
+        EXPECT_PATTERNS: ${{ inputs.expect-pattern-action }}
+        EXPECT_SCRIPT: ${{ github.action_path }}/build.exp
+        EXPECT_TIMEOUT: ${{ inputs.expect-timeout }}
+        OUT_BRANCH: destination
+        OUT_DIR: ${{ inputs.destination-directory }}
+        SRC_BRANCH: source
+        SRC_DIR: ${{ inputs.source-directory }}
+    - id: build-expect
+      if: ${{ inputs.use-expect == 'true' }}
+      run: ${{ github.action_path }}/build.exp
+      shell: bash -el {0}
+    - id: build-vanilla
+      if: ${{ steps.build-expect.outcome == 'skipped' }}
       run: $BUILD_CMD $BUILD_ARGS "source/$SRC_DIR" "destination/$OUT_DIR"
       shell: bash -el {0}
       env:
