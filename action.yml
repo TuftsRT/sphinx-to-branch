@@ -112,7 +112,7 @@ runs:
   steps:
     - id: install-expect
       if: ${{ inputs.use-expect == 'true' }}
-      run: sudo apt-get install --quiet --yes expect
+      run: sudo apt-get update; sudo apt-get install --quiet --yes expect
       shell: bash
     - id: allow-execution
       run: chmod +x ${{ github.action_path }}/*.sh
