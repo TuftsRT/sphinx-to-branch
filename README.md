@@ -17,10 +17,20 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
   - Branch to build documentation from. Defaults to the triggering branch.
   - Default: `${{ github.ref_name }}`
 
+- `source-directory`
+
+  - Directory on source branch containing documentation source files. Defaults to repository root.
+  - Default: `""`
+
 - `destination-branch`
 
   - Branch to push built documentation to. Defaults to `gh-pages` branch.
   - Default: `gh-pages`
+
+- `destination-directory`
+
+  - Directory on destination branch to push the built documentation to. Defaults to repository root.
+  - Default: `""`
 
 - `clear-destination`
 
@@ -30,16 +40,6 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
 - `remove-items`
 
   - Newline-delimited list of glob patterns to delete from the destination branch before building. Ignored if destination branch set to be cleared.
-  - Default: `""`
-
-- `source-directory`
-
-  - Directory on source branch containing documentation source files. Defaults to repository root.
-  - Default: `""`
-
-- `destination-directory`
-
-  - Directory on destination branch to push the built documentation to. Defaults to repository root.
   - Default: `""`
 
 - `environment-file`
@@ -73,6 +73,7 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
   - Default: `"false"`
 
 - `dry-run`
+
   - Whether to run the action without pushing to the destination branch. Must be set to `"true"` for dry run to occur. Other values ignored. Can be used as a pull request status check confirming a successful build. (Destination branch will need to be cleared to ensure a clean build.)
   - Default: `"false"`
 
@@ -135,14 +136,15 @@ jobs:
           source-directory: source
           clear-destination: "true"
           build-arguments: "--nitpicky --fail-on-warning"
+          dry-run: "true"
 ```
 
-Note how the destination directory is cleared to ensure a clean build and the command is run with extra arguments to ensure that even minor issues invoke failure.
+Note how the destination directory is cleared to ensure a clean build and the command is run with extra arguments to ensure that even minor issues invoke failure. The resulting build artifacts are not pushed to any branch because the `dry-run` flag is set.
 
 ## Advanced Usage
 
 The `sphinx-build` command can be replaced with any other command with a similar signature. The specified command is executed in the **root** of the destination repository as follows.
 
 ```
-[command] [arguments] [source-repo]/[source-dir] [destination-dir]
+$BUILD_CMD $BUILD_ARGS "$SRC_BRANCH/$SRC_DIR" "$OUT_BRANCH/$OUT_DIR"
 ```
