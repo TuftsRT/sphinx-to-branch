@@ -187,7 +187,7 @@ Here `expect` is used to fail the build and output an appropriate error message 
 
 ## Advanced Usage
 
-The `sphinx-build` command can be replaced with any other command with a similar signature. The specified command is executed in the **root** of the destination repository as follows.
+The `sphinx-build` command can be replaced with any other command with a similar signature. The specified command is executed in the build environment as follows.
 
 ```bash
 $BUILD_CMD $BUILD_ARGS "$SRC_BRANCH/$SRC_DIR" "$OUT_BRANCH/$OUT_DIR"
