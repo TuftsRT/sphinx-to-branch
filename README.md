@@ -1,14 +1,12 @@
 # sphinx-to-branch
 
-GitHub action to automatically build and publish Sphinx documentation. Default configuration runs `sphinx-build` and pushes the resulting build artifacts to the `gh-pages` branch along with a `.nojekyll` file. The action can also be used to run an arbitrary tool on the contents of one branch and then push the results to another branch if desired, but it is intended for Sphinx deployments and other similar workflows.
+GitHub action to automatically build and publish Sphinx documentation. Default configuration runs `sphinx-build` and pushes the resulting build artifacts to the `gh-pages` branch along with a `.nojekyll` file. The action can also be used to run an arbitrary tool on the contents of one branch and then push the results to another branch if desired, but it is intended for Sphinx deployments and other similar workflows. Additional actions based on the console output of the build process (or any other command run) can be performed using the [`expect`][man-expect] program.
 
-Note that this action only pushes the build artifacts to the `gh-pages` (or any other) branch and **does not** trigger a GitHub Pages build. Ensure that GitHub Pages is enabled for your repository and that the desired branch is configured as the [publishing source][gh-docs-conf-pug-source]. This ensures that a push to the specified repository triggers a pages build.
+Note that this action only pushes the build artifacts to the `gh-pages` (or any other) branch and **does not** trigger a GitHub Pages build. Ensure that GitHub Pages is enabled for your repository and that the desired branch is configured as the [publishing source][gh-docs-conf-pub-source]. This ensures that a push to the specified repository triggers a pages build.
 
 This is a _composite_ action and hence must be run on a Linux-based runner like `ubuntu-latest` or similar.
 
 Developed and maintained by Research Technology (RT), Tufts Technology Services (TTS), Tufts University.
-
-[gh-docs-conf-pug-source]: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
 
 ## Inputs
 
@@ -90,7 +88,7 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
 
 - `expect-pattern-action`
 
-  - Pattern-action pairs passed to `expect` when monitoring console output. See [`man expect`](https://www.tcl-lang.org/man/expect5.31/expect.1.html) and action README for examples and syntax details. Any timeout action must be specified here using the `timeout` pattern. Variable `$EXPECT_TIMEOUT` (value of `expect-timeout`) available for use.
+  - Pattern-action pairs passed to `expect` when monitoring console output. See [`man expect`][man-expect] and action README for examples and syntax details. Any timeout action must be specified here using the `timeout` pattern. Variable `$EXPECT_TIMEOUT` (value of `expect-timeout`) available for use.
   - Default: `""`
 
 ## Usage Examples
@@ -207,4 +205,7 @@ expect {
 exit [lindex [wait] 3]
 ```
 
-The build script is generated via Bash with all `$` variables replaced with their corresponding action inputs. The result is a [Tcl](https://www.tcl-lang.org/) script that is executed via `expect` to run the build. For more information on `expect` and possible pattern-action pairs, see [`man expect`](https://www.tcl-lang.org/man/expect5.31/expect.1.html) and the book _Exploring Expect_ (ISBN: 978-1565920903) by Don Libes.
+The build script is generated via Bash with all `$` variables replaced with their corresponding action inputs. The result is a [Tcl](https://www.tcl-lang.org/) script that is executed via `expect` to run the build. For more information on `expect` and possible pattern-action pairs, see [`man expect`][man-expect] and the book _Exploring Expect_ (ISBN: 978-1565920903) by Don Libes.
+
+[gh-docs-conf-pub-source]: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+[man-expect]: https://www.tcl-lang.org/man/expect5.31/expect.1.html
