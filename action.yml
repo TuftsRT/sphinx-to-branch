@@ -93,8 +93,8 @@ inputs:
   expect-timeout:
     description: |
       Number of seconds `expect` will wait for the build to complete.
-      Must be an integer. Defaults to -1, which disables the timeout.
-      Default timeout behavior is to quit the build and quietly exit success.
+      Must be an integer. Defaults to `-1`, which disables the timeout.
+      Exceeding the time limit causes the build to quit and exit with success.
       Use `expect-pattern-action` to configure an alternate timeout behavior.
     required: false
     default: -1
@@ -103,7 +103,7 @@ inputs:
       Pattern-action pairs passed to `expect` when monitoring console output.
       See `man expect` and action README for examples and syntax details.
       Any timeout action must be specified here using the `timeout` pattern.
-      Variable $EXPECT_TIMEOUT (value of `expect-timeout`) available for use.
+      Variable `$EXPECT_TIMEOUT` (value of `expect-timeout`) available for use.
     required: false
     default: ""
 
