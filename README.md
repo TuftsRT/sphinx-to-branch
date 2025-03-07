@@ -35,15 +35,15 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
   - Whether to delete all files from the destination branch before building. Must be set to `"true"` for deletion to occur. Other values ignored.
   - Default: `"false"`
 
-- `remove-items`
-
-  - Newline-delimited list of glob patterns to delete from the destination branch before building. Ignored if destination branch set to be cleared.
-  - Default: `""`
-
 - `keep-items`
 
   - Newline-delimited list of glob patterns to keep when destination branch set to be cleared. Ignored if destination branch not set to be cleared.
   - Default: `CNAME`
+
+- `remove-items`
+
+  - Newline-delimited list of glob patterns to delete from the destination branch before building. Ignored if destination branch set to be cleared.
+  - Default: `""`
 
 - `environment-file`
 
