@@ -22,6 +22,12 @@ inputs:
       Must be set to "true" for deletion to occur. Other values ignored.
     required: false
     default: "false"
+  keep-items:
+    description: |
+      Newline-delimited list of glob patterns to keep when destination branch
+      set to be cleared. Ignored if destination branch not set to be cleared.
+    required: false
+    default: ""
   remove-items:
     description: |
       Newline-delimited list of glob patters to delete from the destination
@@ -145,6 +151,7 @@ runs:
         CLEAR: ${{ inputs.clear-destination }}
         REPO_PATH: destination
         RM_LIST: ${{ inputs.remove-items }}
+        KEEP_LIST: ${{ inputs.keep-items }}
     - id: write-expect
       if: ${{ inputs.use-expect == 'true' }}
       run: ${{ github.action_path }}/write-expect.sh

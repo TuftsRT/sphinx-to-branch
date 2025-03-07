@@ -6,6 +6,11 @@ git checkout "$BRANCH" -- || git switch --orphan "$BRANCH"
 if [ "$CLEAR" == "true" ]
 then
     git rm -rfq -- *
+    # shellcheck disable=SC2086
+    while IFS="" read -r pattern
+    do
+        git checkout HEAD -- $pattern
+    done <<< "$(grep '\S' <<< $KEEP_LIST)"
 else
     # shellcheck disable=SC2086
     while IFS="" read -r pattern
