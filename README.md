@@ -43,7 +43,7 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
 - `keep-items`
 
   - Newline-delimited list of glob patterns to keep when destination branch set to be cleared. Ignored if destination branch not set to be cleared.
-  - Default: `""`
+  - Default: `CNAME`
 
 - `environment-file`
 

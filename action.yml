@@ -27,7 +27,7 @@ inputs:
       Newline-delimited list of glob patterns to keep when destination branch
       set to be cleared. Ignored if destination branch not set to be cleared.
     required: false
-    default: ""
+    default: CNAME
   remove-items:
     description: |
       Newline-delimited list of glob patters to delete from the destination
