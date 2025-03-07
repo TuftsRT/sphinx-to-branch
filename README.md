@@ -40,6 +40,11 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
   - Newline-delimited list of glob patterns to delete from the destination branch before building. Ignored if destination branch set to be cleared.
   - Default: `""`
 
+- `keep-items`
+
+  - Newline-delimited list of glob patterns to keep when destination branch set to be cleared. Ignored if destination branch not set to be cleared.
+  - Default: `CNAME`
+
 - `environment-file`
 
   - Conda environment YML file on source branch to install dependencies from. Must contain Sphinx and any other build dependencies. Defaults to `environment.yml` in repository root.
