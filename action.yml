@@ -160,24 +160,22 @@ runs:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
         EXPECT_PATTERNS: ${{ inputs.expect-pattern-action }}
-        EXPECT_SCRIPT: ${{ github.action_path }}/build.exp
+        EXPECT_SCRIPT: build.exp
         EXPECT_TIMEOUT: ${{ inputs.expect-timeout }}
         OUT_BRANCH: destination
         OUT_DIR: ${{ inputs.destination-directory }}
         SRC_BRANCH: source
         SRC_DIR: ${{ inputs.source-directory }}
-    - id: build-expect
-      if: ${{ inputs.use-expect == 'true' }}
-      run: ${{ github.action_path }}/build.exp
-      shell: bash -el {0}
-    - id: build-vanilla
-      if: ${{ steps.build-expect.outcome == 'skipped' }}
-      run: $BUILD_CMD $BUILD_ARGS "source/$SRC_DIR" "destination/$OUT_DIR"
+    - id: run-build
+      run: ${{ github.action_path }}/run-build.sh
       shell: bash -el {0}
       env:
         BUILD_ARGS: ${{ inputs.build-arguments }}
         BUILD_CMD: ${{ inputs.build-command }}
+        EXPECT_SCRIPT: build.exp
+        OUT_BRANCH: destination
         OUT_DIR: ${{ inputs.destination-directory }}
+        SRC_BRANCH: source
         SRC_DIR: ${{ inputs.source-directory }}
     - id: deploy-artifacts
       if: ${{ inputs.dry-run != 'true' }}
