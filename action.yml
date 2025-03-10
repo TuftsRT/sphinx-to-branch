@@ -50,9 +50,9 @@ inputs:
     description: |
       Conda environment YML file on source branch to install dependencies from.
       Must contain Sphinx and any other build dependencies.
-      Defaults to `environment.yml` in repository root.
+      Defaults to `environment.yaml` in repository root.
     required: false
-    default: environment.yml
+    default: environment.yaml
   build-command:
     description: |
       Command to build the documentation. Uses `sphinx-build` if omitted.
