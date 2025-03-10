@@ -47,8 +47,8 @@ Developed and maintained by Research Technology (RT), Tufts Technology Services 
 
 - `environment-file`
 
-  - Conda environment YML file on source branch to install dependencies from. Must contain Sphinx and any other build dependencies. Defaults to `environment.yml` in repository root.
-  - Default: `environment.yml`
+  - Conda environment YML file on source branch to install dependencies from. Must contain Sphinx and any other build dependencies. Defaults to `environment.yaml` in repository root.
+  - Default: `environment.yaml`
 
 - `build-command`
 
@@ -188,7 +188,7 @@ jobs:
             }
 ```
 
-Here `expect` is used to fail the build and output an appropriate error message when either a timeout of 300 seconds (5 minutes) is exceeded or the phrase "trying URL" is outputted to the console, indicating a possible attempt at an R package installation during the build process. (This can be used to ensure all required R packages are listed in `environment.yml` and hence preinstalled into the build environment.)
+Here `expect` is used to fail the build and output an appropriate error message when either a timeout of 300 seconds (5 minutes) is exceeded or the phrase "trying URL" is outputted to the console, indicating a possible attempt at an R package installation during the build process. (This can be used to ensure all required R packages are listed in `environment.yaml` and hence preinstalled into the build environment.)
 
 ## Advanced Usage
 
