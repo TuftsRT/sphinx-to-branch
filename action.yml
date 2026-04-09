@@ -124,12 +124,12 @@ runs:
       run: chmod +x ${{ github.action_path }}/*.sh
       shell: bash
     - id: checkout-source
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         ref: ${{ inputs.source-branch }}
         path: source
     - id: setup-environment
-      uses: mamba-org/setup-micromamba@v2
+      uses: mamba-org/setup-micromamba@v3
       with:
         environment-file: source/${{ inputs.environment-file }}
         init-shell: bash
@@ -140,7 +140,7 @@ runs:
         REPO_PATH: source
         USE_BOT: ${{ inputs.use-bot }}
     - id: checkout-destination
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         path: destination
     - id: setup-destination
